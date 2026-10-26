@@ -21,17 +21,17 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            /* Neuer, hochwertiger Farbverlauf mit Tiefe (Vignettierungs-Effekt) */
             background: radial-gradient(ellipse at center, #d8b48e 0%, #ab825c 70%, #765030 100%);
             background-attachment: fixed;
             color: var(--ink);
+            min-width: 320px;
+            -webkit-text-size-adjust: 100%;
         }
 
         .font-hand {
             font-family: 'Caveat', cursive;
         }
 
-        /* Scrapbook Paper Card */
         .scrap-paper {
             background-color: var(--paper-white);
             box-shadow: 3px 5px 15px rgba(50, 30, 20, 0.2), -1px -1px 3px rgba(255, 255, 255, 0.4);
@@ -39,13 +39,14 @@
             position: relative;
         }
 
-        /* Polaroid Photo Effect */
         .polaroid {
             background-color: #ffffff;
             padding: 10px 10px 24px 10px;
             box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.15);
             border-radius: 2px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .polaroid:hover {
@@ -54,7 +55,6 @@
             z-index: 20;
         }
 
-        /* Washi Tape / Tape Effect */
         .washi-tape {
             position: absolute;
             top: -10px;
@@ -81,7 +81,6 @@
             z-index: 10;
         }
 
-        /* Dashed Line for Red Thread */
         .dashed-thread {
             border-left: 3px dashed #c84b56;
             opacity: 0.7;
@@ -92,7 +91,7 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--kraft-card); border-radius: 4px; }
 
         #modal { background: rgba(35, 20, 15, 0.8); }
-        /* Post-it Notizzettel Stil */
+
         .post-it {
             background-color: #fff8dc;
             box-shadow: 2px 3px 10px rgba(0,0,0,0.15);
@@ -102,6 +101,7 @@
             font-family: 'Caveat', cursive;
             color: #4a3525;
         }
+
         .post-it::before {
             content: '';
             position: absolute;
@@ -114,37 +114,29 @@
             border-left: 2px dashed rgba(0,0,0,0.1);
             border-right: 2px dashed rgba(0,0,0,0.1);
         }
-        
+
+        @media (max-width: 639px) {
+            body { padding-bottom: 24px; }
+            header { padding-top: 24px; padding-bottom: 24px; }
+            #timeline-container { gap: 36px; }
+        }
     </style>
 </head>
 <body class="custom-scrollbar min-h-screen relative overflow-x-hidden pb-16">
-    
 
-    <!-- Header Section -->
+    <!-- Kopfbereich mit Titel und Live-Timer -->
     <header class="pt-10 pb-12 px-4 text-center relative z-10 max-w-3xl mx-auto">
-        <!-- Bär Bild (falls vorhanden) -->
         <div class="flex justify-center mb-4">
             <img src="bär2.png" alt="Bär Illustration" class="w-28 sm:w-36 h-auto object-contain drop-shadow-md" onerror="this.style.display='none'">
         </div>
 
-        <!-- Scrapbook Title Card -->
         <div class="scrap-paper p-6 sm:p-8 rounded-lg max-w-2xl mx-auto relative mb-8 rotate-[-1deg]">
             <div class="washi-tape"></div>
-            
-            <span class="font-hand text-xl sm:text-2xl text-[#c84b56] font-bold block mb-1">
-                11.11.2023 – 11.11.2026
-            </span>
-            
-            <h1 class="font-hand text-4xl sm:text-6xl font-bold text-[#3b2a26] mb-3 leading-none">
-                Drei Jahre mit dir
-            </h1>
-            
-            <p class="font-hand text-xl sm:text-2xl text-[#6b4e46] font-medium leading-tight">
-                Geklebte Erinnerungen, kleine Momente & unsere gemeinsame Geschichte.
-            </p>
+            <span class="font-hand text-xl sm:text-2xl text-[#c84b56] font-bold block mb-1">11.11.2023 – 11.11.2026</span>
+            <h1 class="font-hand text-4xl sm:text-6xl font-bold text-[#3b2a26] mb-3 leading-none">Drei Jahre mit dir</h1>
+            <p class="font-hand text-xl sm:text-2xl text-[#6b4e46] font-medium leading-tight">Geklebte Erinnerungen, kleine Momente & unsere gemeinsame Geschichte.</p>
         </div>
 
-        <!-- Live Count-Up Counter (Notizzettel Style) -->
         <div class="scrap-paper p-5 sm:p-6 max-w-xl mx-auto rounded shadow-lg rotate-[1deg]">
             <div class="washi-tape-corner"></div>
             <h2 class="font-hand text-2xl font-bold text-[#6b4e46] mb-3">Wir sind zusammen seit:</h2>
@@ -169,35 +161,34 @@
         </div>
     </header>
 
-    <!-- Interaktive Timeline (Scrapbook Faden) -->
+    <!-- Zeitleiste (Timeline) für Erinnerungen -->
     <section class="max-w-4xl mx-auto px-4 py-8 relative z-10">
         <div class="relative">
-            <!-- Roter gestrichelter Faden -->
             <div class="dashed-thread absolute left-4 md:left-1/2 top-0 bottom-0 -translate-x-1/2"></div>
-
-            <!-- Timeline Elements Container -->
             <div id="timeline-container" class="space-y-12"></div>
         </div>
     </section>
 
-    <!-- Interaktiver Einladungs-Abschnitt -->
+    <!-- Post-it Notiz -->
+    <div class="max-w-xs mx-auto my-6 rotate-[-3deg] z-20 relative">
+        <div class="post-it text-xl font-bold text-center">
+            „Einfach die schönste Zeit meines Lebens mit dir! ❤️“
+        </div>
+    </div>
+
+    <!-- Einladungs-Abschnitt -->
     <section class="max-w-xl mx-auto px-4 py-12 text-center relative z-10">
         <div class="scrap-paper p-8 sm:p-10 rounded-lg relative overflow-hidden shadow-2xl rotate-[-1deg]">
             <div class="washi-tape"></div>
-            
-            <h2 class="font-hand text-3xl sm:text-4xl font-bold text-[#3b2a26] mb-3">
-                Und jetzt geht's weiter!
-            </h2>
-            <p class="font-hand text-2xl text-[#6b4e46] mb-6">
-                Heute Abend zum 3-jährigen Jahrestag indisch essen gehen? Bist du dabei?
-            </p>
+            <h2 class="font-hand text-3xl sm:text-4xl font-bold text-[#3b2a26] mb-3">Und jetzt geht's weiter!</h2>
+            <p class="font-hand text-2xl text-[#6b4e46] mb-6">Heute Abend zum 3-jährigen Jahrestag indisch essen gehen? Bist du dabei?</p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 min-h-[60px] relative" id="button-container">
+            <div id="button-container" class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 relative w-full min-h-[60px]">
                 <button id="accept-btn" onclick="acceptInvitation()" class="w-full sm:w-auto px-8 py-3 bg-[#c84b56] hover:bg-[#a83943] text-white font-hand text-2xl font-bold rounded shadow-md transition">
                     Ja, sehr gerne!
                 </button>
-                <button id="decline-btn" class="w-full sm:w-auto px-6 py-3 bg-[#e6d7c3] text-[#6b4e46] font-hand text-2xl font-bold rounded border border-[#c8b49c] transition absolute sm:static">
-                    Nein
+                <button id="decline-btn" type="button" class="w-full sm:w-auto px-8 py-3 bg-[#e6d7c3] text-[#6b4e46] font-hand text-2xl font-bold rounded border border-[#c8b49c] transition">
+                    Nein 🙈
                 </button>
             </div>
 
@@ -206,24 +197,17 @@
             </div>
         </div>
     </section>
-    <div class="max-w-xs mx-auto my-6 rotate-[-3deg] z-20 relative">
-    <div class="post-it text-xl font-bold text-center">
-        „Einfach die schönste Zeit meines Lebens mit dir! ❤️“
-    </div>
-</div>
 
-    <!-- Modal für Timeline-Karten (Großansicht) -->
-    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="scrap-paper p-6 rounded-lg max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 relative max-h-[90vh] flex flex-col" id="modal-content">
+    <!-- Modal (Popup für Großansicht der Bilder) -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-3 sm:p-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="scrap-paper p-4 sm:p-6 rounded-lg max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 relative max-h-[calc(100dvh-24px)] flex flex-col" id="modal-content">
             <div class="washi-tape"></div>
-            
             <button onclick="closeModal()" class="absolute top-3 right-3 bg-[#3b2a26] text-white rounded-full p-1.5 hover:bg-[#c84b56] transition z-20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Bild-Anzeige im Polaroid-Look im Popup -->
             <div class="polaroid my-2 bg-white shrink-0">
-                <img id="modal-img" src="" alt="" class="w-full max-h-[50vh] object-contain rounded-sm">
+                <img id="modal-img" src="" alt="" class="w-full max-h-[35vh] sm:max-h-[50vh] object-contain rounded-sm">
             </div>
 
             <div class="p-2 overflow-y-auto custom-scrollbar">
@@ -231,7 +215,6 @@
                 <h3 id="modal-title" class="font-hand text-3xl font-bold text-[#3b2a26] mb-1"></h3>
                 <p id="modal-desc" class="font-hand text-xl text-[#523d37] leading-tight mb-3"></p>
                 
-                <!-- Galerie Vorschau -->
                 <div id="modal-gallery-wrap" class="hidden border-t border-[#d8c3ad] pt-3 mt-2">
                     <span class="font-hand text-lg font-bold text-[#6b4e46] block mb-1">Weitere Fotos:</span>
                     <div id="modal-gallery" class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar"></div>
@@ -241,127 +224,24 @@
     </div>
 
     <script>
-        // Data for Timeline Events
+        // Ereignis-Daten für die Timeline
         const events = [
-            {
-                date: "11.11.2023",
-                title: "Der Anfang",
-                desc: "An diesem Tag hat unsere gemeinsame Reise begonnen.",
-                image: "Verflochtene Hände im Stadtalltag.png"
-            },
-            {
-                date: "11.11.2023",
-                endDate: "29.2.2024",
-                title: "Winter 2024",
-                desc: "Kalte und schöne Tage im Winter 2024.",
-                image: "1_4_11_2024.jpg",
-                gallery: ["Spazieren_4_2_2024.jpg", "Feb24.jpg", "Winter24.jpg", "Winter24_2.jpg" ]
-            },
-            {
-                date: "27.04.2024",
-                location: "Augsburg",
-                title: "Auswärtsspiel in Augsburg",
-                desc: "Werder Bremen gewinnt mit 0:3 in Augsburg. Ein genialer Spieltag im Stadion.",
-                image: "WerderBremen3.jpg",
-                gallery: ["WerderBremenMatchInAugsburg_27_4_2024.jpg", "WerderBremen2.jpg"]
-            },
-            {
-                date: "21.06.2024",
-                title: "Sommer-Date",
-                desc: "Gemeinsam fertig gemacht für ein schönes Sommer-Date.",
-                image: "Date_21_6_2024.jpg",
-            },
-            {
-                date: "10.08.2024",
-                title: "Erster Gemeinsamer Sommer",
-                desc: "Zusammen warme Tage genießen.",
-                image: "Sommer24_10_8_2024.jpg",
-                gallery: ["Sommer.jpg", "ErsterSommer_2_24_06_2024.jpg"]
-            },
-            {
-                date: "07.09.2024",
-                location: "Innsbruck",
-                title: "Ausflug nach Innsbruck",
-                desc: "Ein schöner Tag unterwegs in den Bergen und der Stadt.",
-                image: "Innsbruck_7_9_2024.jpg",
-                gallery: ["Innsbruck.jpg", "Innsbruck2.jpg", "Innsbruck3.jpg", "Innsbruck4.jpg", "Innsbruck5.jpg", "Innsbruck6.jpg"]
-            },
-            {
-                date: "08.11.2024",
-                title: "1. Jahrestag Date",
-                desc: "Unser erstes Jahr zusammen gefeiert.",
-                image: "ErstesBild_8_11_2024.jpg",
-                gallery: ["ErstesBild_4_11_2024.jpg", "Mia_9_11_2024.jpg", ]
-            },
-            {
-                date: "11.11.2023",
-                endDate: "29.2.2024",
-                title: "Winter 2025",
-                desc: "Kalte und schöne Tage im Winter 2024.",
-                image: "Winter_20_12_2025.jpg",
-                gallery: ["Winter24_3.jpg",  ]
-            },
-            {
-                date: "11.7.2025",
-                title: "Diamond League",
-                desc: "Finale der Diamond League",
-                image: "DiaLeague.jpg",
-                gallery: ["DiaLeague2.jpg", "DiaLeague3.jpg", ]
-            },
-            {
-                date: "17.08.2025",
-                endDate: "24.08.2025",
-                location: "Südfrankreich",
-                title: "Sommerurlaub in Frankreich",
-                desc: "Unterwegs in Südfrankreich, warme Sommerabende und tolle Aussichten.",
-                image: "UrlaubFrankreich_17_8_2025.jpg",
-                gallery: ["Frankreich_17_8_2025.jpg", "Frankreich.jpg", "Frankreich2.jpg", "Frankreich3.jpg", "Frankreich4.jpg", "Frankreich5.jpg", "Frankreich6.jpg", "Frankreich7.jpg", "Frankreich8.jpg", "Frankreich9.jpg", "Frankreich10.jpg"]
-            },
-            {
-                date: "31.10.2025",
-                title: "Wandern im Herbst",
-                desc: "Ein Tag draußen, schöne Aussicht und einfach gemeinsam unterwegs sein.",
-                image: "Wandern_31_10_2025.jpg",
-                gallery: ["Wandern.jpg", "Wandern2.jpg", "Wandern3.jpg", "Wandern4.jpg", "Wandern5.jpg", "Wandern6.jpg"]
-            },
-            {
-                date: "16.11.2025",
-                title: "Mias Maturaball",
-                location: "Cubus, Wolfurt",
-                desc: "Dein Abend, dein Kleid und ein richtig schöner Anlass. Ich war stolz auf dich und froh, dabei zu sein.",
-                image: "Maturaball_16_11_2025.jpg",
-                gallery: ["Maturaball.jpg", "Maturaball2.jpg", "Maturaball3.jpg", "Maturaball4.jpg", "Maturaball5.jpg",]
-            },
-            {
-                date: "27.03.2026",
-                endDate: "04.04.2026",
-                location: "Sizilien",
-                title: "Sizilien Urlaub",
-                desc: "Gemeinsamer Urlaub in Sizilien!",
-                image: "Sizilien_29_3_2026.jpg",
-                gallery: ["Sizilien7.jpg", "Sizilien2.jpg", "Sizilien3.jpg", "Sizilien4.jpg", "Sizilien5.jpg", "Sizilien6.jpg", "Sizilien8.jpg", "Sizilien9.jpg", "Sizilien10.jpg"]
-            },
-            {
-                date: "03.08.2026",
-                endDate: "19.08.2026",
-                location: "Steiermark",
-                title: "Führerschein Intensivkurs",
-                desc: "Zwei Wochen Fahr-Camp geschafft und den Schein in der Tasche.",
-                image: "FührerscheinSteiermark_5_8_2026.jpg"
-            },
-            {
-                date: "27.09.2026",
-                location: "Lünersee",
-                title: "Wanderung am Lünersee",
-                desc: "Traumhafter Ausflug ans Türkise Wasser in den Vorarlberger Bergen.",
-                image: "Lünersee_27_9_2026.jpg"
-            },
-            {
-                date: "11.11.2026",
-                title: "3 Jahre Zusammen",
-                desc: "Heute feiern wir unseren 3. Jahrestag bei indischem Essen.",
-                image: "Frankreich_17_8_2025.jpg"
-            }
+            { date: "11.11.2023", title: "Der Anfang", desc: "An diesem Tag hat unsere gemeinsame Reise begonnen.", image: "Verflochtene Hände im Stadtalltag.png" },
+            { date: "11.11.2023", endDate: "29.2.2024", title: "Winter 2024", desc: "Kalte und schöne Tage im Winter 2024.", image: "1_4_11_2024.jpg", gallery: ["Spazieren_4_2_2024.jpg", "Feb24.jpg", "Winter24.jpg", "Winter24_2.jpg"] },
+            { date: "27.04.2024", location: "Augsburg", title: "Auswärtsspiel in Augsburg", desc: "Werder Bremen gewinnt mit 0:3 in Augsburg. Ein genialer Spieltag im Stadion.", image: "WerderBremen3.jpg", gallery: ["WerderBremenMatchInAugsburg_27_4_2024.jpg", "WerderBremen2.jpg"] },
+            { date: "21.06.2024", title: "Sommer-Date", desc: "Gemeinsam fertig gemacht für ein schönes Sommer-Date.", image: "Date_21_6_2024.jpg" },
+            { date: "10.08.2024", title: "Erster Gemeinsamer Sommer", desc: "Zusammen warme Tage genießen.", image: "Sommer24_10_8_2024.jpg", gallery: ["Sommer.jpg", "ErsterSommer_2_24_06_2024.jpg"] },
+            { date: "07.09.2024", location: "Innsbruck", title: "Ausflug nach Innsbruck", desc: "Ein schöner Tag unterwegs in den Bergen und der Stadt.", image: "Innsbruck_7_9_2024.jpg", gallery: ["Innsbruck.jpg", "Innsbruck2.jpg", "Innsbruck3.jpg", "Innsbruck4.jpg", "Innsbruck5.jpg", "Innsbruck6.jpg"] },
+            { date: "08.11.2024", title: "1. Jahrestag Date", desc: "Unser erstes Jahr zusammen gefeiert.", image: "ErstesBild_8_11_2024.jpg", },
+            { date: "11.11.2024", endDate: "29.2.2025", title: "Winter 2025", desc: "Kalte und schöne Tage im Winter 2025.", image: "Winter_20_12_2025.jpg", gallery: ["Winter24_3.jpg"] },
+            { date: "11.7.2025", title: "Diamond League", desc: "Finale der Diamond League", image: "DiaLeague.jpg", gallery: ["DiaLeague2.jpg", "DiaLeague3.jpg"] },
+            { date: "17.08.2025", endDate: "24.08.2025", location: "Südfrankreich", title: "Sommerurlaub in Frankreich", desc: "Unterwegs in Südfrankreich, warme Sommerabende und tolle Aussichten.", image: "UrlaubFrankreich_17_8_2025.jpg", gallery: ["Frankreich_17_8_2025.jpg", "Frankreich.jpg", "Frankreich2.jpg", "Frankreich3.jpg", "Frankreich4.jpg", "Frankreich5.jpg", "Frankreich6.jpg", "Frankreich7.jpg", "Frankreich8.jpg", "Frankreich9.jpg", "Frankreich10.jpg"] },
+            { date: "31.10.2025", title: "Wandern im Herbst", desc: "Ein Tag draußen, schöne Aussicht und einfach gemeinsam unterwegs sein.", image: "Wandern_31_10_2025.jpg", gallery: ["Wandern.jpg", "Wandern2.jpg", "Wandern3.jpg", "Wandern4.jpg", "Wandern5.jpg", "Wandern6.jpg"] },
+            { date: "16.11.2025", title: "Mias Maturaball", location: "Cubus, Wolfurt", desc: "Dein Abend, dein Kleid und ein richtig schöner Anlass. Ich war stolz auf dich und froh, dabei zu sein.", image: "Maturaball_16_11_2025.jpg", gallery: ["Maturaball.jpg", "Maturaball2.jpg", "Maturaball3.jpg", "Maturaball4.jpg", "Maturaball5.jpg"] },
+            { date: "27.03.2026", endDate: "04.04.2026", location: "Sizilien", title: "Sizilien Urlaub", desc: "Gemeinsamer Urlaub in Sizilien!", image: "Sizilien_29_3_2026.jpg", gallery: ["Sizilien7.jpg", "Sizilien2.jpg", "Sizilien3.jpg", "Sizilien4.jpg", "Sizilien5.jpg", "Sizilien6.jpg", "Sizilien8.jpg", "Sizilien9.jpg", "Sizilien10.jpg"] },
+            { date: "03.08.2026", endDate: "19.08.2026", location: "Steiermark", title: "Führerschein Intensivkurs", desc: "Zwei Wochen Fahr-Camp geschafft und den Schein in der Tasche.", image: "FührerscheinSteiermark_5_8_2026.jpg" },
+            { date: "27.09.2026", location: "Lünersee", title: "Wanderung am Lünersee", desc: "Traumhafter Ausflug ans Türkise Wasser in den Vorarlberger Bergen.", image: "Lünersee_27_9_2026.jpg" },
+            { date: "11.11.2026", title: "3 Jahre Zusammen", desc: "Heute feiern wir unseren 3. Jahrestag bei indischem Essen.", image: "Frankreich_17_8_2025.jpg" }
         ];
 
         function formatDateText(item) {
@@ -371,23 +251,19 @@
             return str;
         }
 
-        // Render Scrapbook Timeline
+        // Timeline dynamisch generieren
         const container = document.getElementById('timeline-container');
         events.forEach((item, index) => {
             const isLeft = index % 2 === 0;
             const rotationDegree = (index % 3 === 0 ? -2 : (index % 3 === 1 ? 2 : -1));
-            
             const el = document.createElement('div');
             el.className = `relative flex items-center justify-between md:justify-normal group ${isLeft ? 'md:flex-row-reverse' : ''}`;
-            
             const formattedDate = formatDateText(item);
 
             el.innerHTML = `
-                <!-- Pin / Knot on Thread -->
                 <div class="flex items-center justify-center w-6 h-6 rounded-full bg-[#c84b56] text-white shadow-md absolute left-4 md:left-1/2 -translate-x-1/2 z-10 border-2 border-white">
                     <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
                 </div>
-                
                 <div class="w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-[calc(50%-2rem)]">
                     <div onclick="openModal(${index})" class="polaroid cursor-pointer relative" style="transform: rotate(${rotationDegree}deg);">
                         <div class="washi-tape"></div>
@@ -403,12 +279,11 @@
             container.appendChild(el);
         });
 
-        // Timer Logic
+        // Live-Timer Logik
         const startDate = new Date('2023-11-11T00:00:00');
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
-
             document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
             document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
             document.getElementById('minutes').innerText = Math.floor((diff / 1000 / 60) % 60);
@@ -417,7 +292,7 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Modal Logic
+        // Modal (Popup) Logik
         const modal = document.getElementById('modal');
         const modalContent = document.getElementById('modal-content');
 
@@ -465,27 +340,34 @@
             if (e.target === modal) closeModal();
         });
 
-        // Fleeing Button
+        // Ausweichender "Nein"-Button (funktioniert jetzt auch auf Handys mit Textwechsel & Teleport)
         const declineBtn = document.getElementById('decline-btn');
-        declineBtn.addEventListener('mouseenter', moveButton);
-        declineBtn.addEventListener('click', moveButton);
+        const declineTexts = ["Nein 🙈", "Sicher? 🤔", "Bestimmt verklickt! 😅", "Falscher Button! 🛑", "Keine Chance!", "Sag lieber Ja! ❤️"];
+        let clickCount = 0;
 
         function moveButton() {
-            if (window.matchMedia('(max-width: 639px)').matches) return;
-            const area = document.getElementById('button-container');
-            const maxX = Math.max(0, (area.clientWidth - declineBtn.offsetWidth) / 2 - 8);
-            const maxY = 16;
-            const x = (Math.random() * 2 - 1) * Math.min(maxX, 70);
-            const y = (Math.random() * 2 - 1) * maxY;
+            const x = (Math.random() * 2 - 1) * 70;
+            const y = (Math.random() * 2 - 1) * 20;
             declineBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
+        declineBtn.addEventListener('mouseenter', moveButton);
+
+        declineBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            clickCount++;
+            if (clickCount < declineTexts.length) {
+                declineBtn.innerText = declineTexts[clickCount];
+                moveButton();
+            } else {
+                declineBtn.style.opacity = '0';
+                setTimeout(() => { declineBtn.style.display = 'none'; }, 300);
+            }
+        });
+
+        // Einladung akzeptiert (Konfetti)
         function acceptInvitation() {
-            confetti({
-                particleCount: 120,
-                spread: 80,
-                origin: { y: 0.6 }
-            });
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
             document.getElementById('accepted-message').classList.remove('hidden');
             document.getElementById('accept-btn').disabled = true;
             document.getElementById('accept-btn').classList.add('opacity-50');
