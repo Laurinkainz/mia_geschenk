@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Jahre mit dir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+        :root {
+            --cream: #fbf5ef;
+            --paper: #fffaf6;
+            --rose: #b76570;
+            --rose-deep: #8e4553;
+            --ink: #49383a;
+            --muted: #8b7777;
+            --line: #e8cfd0;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(231, 190, 190, .28), transparent 34rem),
+                radial-gradient(ellipse at 95% 35%, rgba(238, 214, 192, .35), transparent 30rem),
+                var(--cream);
+            color: var(--ink);
+        }
+        h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+        .glass-card {
+            background: rgba(255, 250, 246, .88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(183, 101, 112, .18);
+            box-shadow: 0 16px 42px rgba(104, 65, 65, .07);
+        }
+        .timeline-line {
+            background: linear-gradient(180deg, rgba(183, 101, 112, .12), rgba(183, 101, 112, .72) 50%, rgba(183, 101, 112, .12));
+        }
+        .memory-card {
+            overflow: hidden;
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .memory-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(104, 65, 65, .12);
+            border-color: rgba(183, 101, 112, .45);
+        }
+        .memory-image-wrap {
+            width: 100%;
+            background: #f1e5df;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 12px 0 14px;
+        }
+        .memory-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(183, 101, 112, .06); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(183, 101, 112, .35); border-radius: 3px; }
+        .eyebrow { color: var(--rose-deep); letter-spacing: .16em; }
+        .soft-text { color: var(--muted); }
+        .rose-button {
+            background: var(--rose);
+            color: white;
+            box-shadow: 0 8px 20px rgba(142, 69, 83, .18);
+        }
+        .rose-button:hover { background: var(--rose-deep); }
+        #modal { background: rgba(48, 32, 34, .72); }
+        #modal-img {
+            width: 100%;
+            height: auto;
+            max-height: min(60vh, 550px);
+            object-fit: contain;
+            background: #f1e5df;
+        }
+        @media (max-width: 640px) {
+            .memory-image { max-height: 340px; }
+        }
+    </style>
+</head>
+<body class="custom-scrollbar min-h-screen relative overflow-x-hidden">
+
+    <!-- Hero / Header Section -->
+    <header class="pt-12 pb-16 px-4 text-center relative z-10 max-w-4xl mx-auto">
+        <div class="flex justify-center mb-5">
+            <img src="Bär.jpg" alt="Ein kleiner Bär mit einem Herz" class="w-24 sm:w-32 h-auto object-contain drop-shadow-sm" onerror="this.style.display='none'">
+        </div>
+        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest eyebrow bg-white/60 border border-rose-200 mb-6">
+            11. November 2023 – 11. November 2026
+        </span>
+        
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-[#49383a] mb-6 leading-tight">
+            Drei Jahre. Wir zwei.
+        </h1>
+        
+        <p class="soft-text text-base md:text-lg max-w-xl mx-auto mb-12 font-light">
+            Drei Jahre voller kleiner Augenblicke, gemeinsamer Abenteuer und Erinnerungen, die uns bleiben.
+        </p>
+
+        <!-- Live Count-Up Counter -->
+        <div class="glass-card rounded-2xl p-6 md:p-8 max-w-2xl mx-auto shadow-2xl">
+            <h2 class="text-xs font-medium uppercase tracking-widest soft-text mb-6">Seit unserem Anfang</h2>
+            <div class="grid grid-cols-4 gap-2 md:gap-6 text-center">
+                <div class="p-3 bg-white/70 rounded-xl border border-rose-100">
+                    <span id="days" class="block text-2xl md:text-4xl font-bold text-[#b76570]">0</span>
+                    <span class="text-[10px] md:text-xs soft-text uppercase tracking-wider">Tage</span>
+                </div>
+                <div class="p-3 bg-white/70 rounded-xl border border-rose-100">
+                    <span id="hours" class="block text-2xl md:text-4xl font-bold text-[#b76570]">0</span>
+                    <span class="text-[10px] md:text-xs soft-text uppercase tracking-wider">Stunden</span>
+                </div>
+                <div class="p-3 bg-white/70 rounded-xl border border-rose-100">
+                    <span id="minutes" class="block text-2xl md:text-4xl font-bold text-[#b76570]">0</span>
+                    <span class="text-[10px] md:text-xs soft-text uppercase tracking-wider">Minuten</span>
+                </div>
+                <div class="p-3 bg-white/70 rounded-xl border border-rose-100">
+                    <span id="seconds" class="block text-2xl md:text-4xl font-bold text-[#b76570]">0</span>
+                    <span class="text-[10px] md:text-xs soft-text uppercase tracking-wider">Sekunden</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interaktive Timeline -->
+    <section class="max-w-4xl mx-auto px-4 py-12 relative z-10">
+        <div class="relative">
+            <!-- Vertikaler Roter Faden -->
+            <div class="timeline-line absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 -translate-x-1/2"></div>
+
+            <!-- Timeline Elements CONTAINER -->
+            <div id="timeline-container" class="space-y-12"></div>
+        </div>
+    </section>
+
+    <!-- Interaktiver Einladungs-Abschnitt -->
+    <section class="max-w-2xl mx-auto px-4 py-20 text-center relative z-10">
+        <div class="glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden border border-rose-200">
+            <h2 class="text-2xl md:text-3xl font-semibold text-[#49383a] mb-4">
+                Und das ist erst der Anfang
+            </h2>
+            <p class="text-[#806b6c] text-sm md:text-base mb-8 max-w-md mx-auto">
+                Drei Jahre wir. Lass uns das heute Abend bei unserem Lieblingsessen feiern – bist du dabei?
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 min-h-[60px] relative" id="button-container">
+                <button id="accept-btn" onclick="acceptInvitation()" class="w-full sm:w-auto px-8 py-3.5 rose-button font-medium rounded-xl transition shadow-lg">
+                    Ja, sehr gerne
+                </button>
+                <button id="decline-btn" class="w-full sm:w-auto px-6 py-3.5 bg-[#f1e5df] text-[#806b6c] font-medium rounded-xl border border-rose-100 transition absolute sm:static">
+                    Nein
+                </button>
+            </div>
+
+            <div id="accepted-message" class="hidden mt-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-[#8e4553] text-sm">
+                Yess, dann freu ich mich auf heute Abend mit dir. Das wird schön.
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal für Timeline-Karten -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#302022]/75 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-rose-200 transform scale-95 transition-transform duration-300 my-8 max-h-[90vh] flex flex-col" id="modal-content">
+            
+            <!-- Bild-Anzeige -->
+            <div class="relative bg-[#f1e5df] flex items-center justify-center shrink-0">
+                <img id="modal-img" src="" alt="" class="w-full">
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-[#49383a]/70 text-white rounded-full p-2 hover:bg-[#49383a] transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Inhalts-Bereich -->
+            <div class="p-6 overflow-y-auto custom-scrollbar">
+                <span id="modal-date" class="text-xs font-semibold eyebrow uppercase tracking-wider block mb-1"></span>
+                <h3 id="modal-title" class="text-xl font-semibold text-[#49383a] mb-3"></h3>
+                <p id="modal-desc" class="text-[#806b6c] text-sm leading-relaxed font-light mb-4"></p>
+                
+                <!-- Extra Bilder Vorschau (Galerie) -->
+                <div id="modal-gallery-wrap" class="hidden border-t border-rose-100 pt-4 mt-2">
+                    <span class="text-xs font-semibold text-[#806b6c] uppercase tracking-wider block mb-2">Weitere Fotos</span>
+                    <div id="modal-gallery" class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for Timeline Events
+        // Optionale Felder:
+        // - endDate: "24.08.2025" (wenn kein endDate vorhanden ist, zeigt es nur den einzelnen Tag)
+        // - location: "Südfrankreich" (wird zum Datum hinzugefügt)
+        // - gallery: ["Bild1.jpg", "Bild2.jpg"] (zusätzliche Fotos für das Modal-Popup)
+        const events = [
+            {
+                date: "11.11.2023",
+                title: "Der Anfang",
+                desc: "An diesem Tag hat unsere gemeinsame Reise begonnen.",
+                image: "Verflochtene Hände im Stadtalltag.png"
+            },
+            {
+                date: "04.02.2024",
+                title: "Winterspaziergang",
+                desc: "Kalter Tag, aber ein schöner gemeinsamer Spaziergang an der frischen Luft.",
+                image: "Spazieren_4_2_2024.jpg"
+            },
+            {
+                date: "27.04.2024",
+                location: "Augsburg",
+                title: "Auswärtsspiel in Augsburg",
+                desc: "Werder Bremen gewinnt mit 0:3 in Augsburg. Ein genialer Spieltag im Stadion.",
+                image: "WerderBremenMatchInAugsburg_27_4_2024.jpg"
+            },
+            {
+                date: "21.06.2024",
+                title: "Sommer-Date",
+                desc: "Gemeinsam fertig gemacht für ein schönes Sommer-Date.",
+                image: "Date_21_6_2024.jpg"
+            },
+            {
+                date: "24.06.2024",
+                title: "Erster gemeinsamer Sommer",
+                desc: "Die wärmeren Tage genießen und einfach Zeit zusammen verbringen.",
+                image: "ErsterSommer_2_24_06_2024.jpg",
+                gallery: ["ErsterSommer_24_06_2024.png"]
+            },
+            {
+                date: "10.08.2024",
+                title: "Abendstimmung im Sommer",
+                desc: "Ein ruhiger Moment beim Sonnenuntergang.",
+                image: "Sommer24_10_8_2024.jpg",
+                gallery: ["Sommer.jpg"]
+            },
+            {
+                date: "07.09.2024",
+                location: "Innsbruck",
+                title: "Ausflug nach Innsbruck",
+                desc: "Ein schöner Tag unterwegs in den Bergen und der Stadt.",
+                image: "Innsbruck_7_9_2024.jpg"
+            },
+            {
+                date: "24.09.2024",
+                title: "Herbstspaziergang",
+                desc: "Spazieren bei entspanntem Herbstwetter.",
+                image: "Spazieren_24_9_2024.jpg"
+            },
+            {
+                date: "08.11.2024",
+                title: "1. Jahrestag Date",
+                desc: "Unser erstes Jahr zusammen gefeiert.",
+                image: "ErstesBild_8_11_2024.jpg",
+                gallery: ["ErstesBild_4_11_2024.jpg", "Mia_9_11_2024.jpg"]
+            },
+            {
+                date: "17.08.2025",
+                endDate: "24.08.2025",
+                location: "Südfrankreich",
+                title: "Sommerurlaub in Frankreich",
+                desc: "Unterwegs in Südfrankreich, warme Sommerabende und tolle Aussichten.",
+                image: "UrlaubFrankreich_17_8_2025.jpg",
+                gallery: ["Frankreich_17_8_2025.jpg"]
+            },
+            {
+                date: "31.10.2025",
+                title: "Wandern im Herbst",
+                desc: "Ein Tag draußen, schöne Aussicht und einfach gemeinsam unterwegs sein.",
+                image: "Wandern_31_10_2025.jpg"
+            },
+            {
+                date: "16.11.2025",
+                title: "Mias Maturaball",
+                desc: "Dein Abend, dein Kleid und ein richtig schöner Anlass. Ich war stolz auf dich und froh, dabei zu sein.",
+                image: "Maturaball_16_11_2025.jpg"
+            },
+            {
+                date: "29.03.2026",
+                endDate: "05.04.2026",
+                location: "Sizilien",
+                title: "Sizilien Urlaub",
+                desc: "Gemeinsamer Urlaub in Sizilien!",
+                image: "Sizilien_29_3_2026.jpg"
+            },
+            {
+                date: "03.08.2026",
+                endDate: "17.08.2026",
+                location: "Steiermark",
+                title: "Führerschein Intensivkurs Steiermark",
+                desc: "Zwei Wochen Fahr-Camp geschafft und den Schein in der Tasche.",
+                image: "FührerscheinSteiermark_5_8_2026.jpg"
+            },
+            {
+                date: "27.09.2026",
+                location: "Vorarlberg",
+                title: "Wanderung am Lünersee",
+                desc: "Traumhafter Ausflug ans Türkise Wasser in den Vorarlberger Bergen.",
+                image: "Lünersee_27_9_2026.jpg"
+            },
+            {
+                date: "11.11.2026",
+                title: "3 Jahre Zusammen",
+                desc: "Heute feiern wir unseren 3. Jahrestag bei indischem Essen.",
+                image: "Date.jpg"
+            }
+        ];
+
+        // Format Date string helper
+        function formatDateText(item) {
+            let str = item.date;
+            if (item.endDate) {
+                str += ` – ${item.endDate}`;
+            }
+            if (item.location) {
+                str += ` • ${item.location}`;
+            }
+            return str;
+        }
+
+        // Render Timeline
+        const container = document.getElementById('timeline-container');
+        events.forEach((item, index) => {
+            const isLeft = index % 2 === 0;
+            const el = document.createElement('div');
+            el.className = `relative flex items-center justify-between md:justify-normal group ${isLeft ? 'md:flex-row-reverse' : ''}`;
+            
+            const formattedDate = formatDateText(item);
+
+            el.innerHTML = `
+                <div class="flex items-center justify-center w-8 h-8 rounded-full bg-[#fffaf6] border-2 border-[#b76570] text-[#b76570] shadow-lg absolute left-4 md:left-1/2 -translate-x-1/2 z-10 group-hover:scale-110 transition">
+                    <div class="w-2 h-2 bg-[#b76570] rounded-full"></div>
+                </div>
+                
+                <div class="w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-[calc(50%-2rem)]">
+                    <div onclick="openModal(${index})" class="glass-card memory-card p-5 rounded-2xl cursor-pointer hover:border-rose-300 hover:bg-white transition duration-300">
+                        <span class="text-xs font-semibold eyebrow uppercase tracking-wider block mb-1">${formattedDate}</span>
+                        <h3 class="text-lg font-semibold text-[#49383a] mb-2">${item.title}</h3>
+                        <div class="memory-image-wrap">
+                            <img src="${item.image}" alt="${item.title}" class="memory-image" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80'">
+                        </div>
+                        <p class="soft-text text-xs leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            `;
+            container.appendChild(el);
+        });
+
+        // Live Count-Up Timer (Start: 11.11.2023)
+        const startDate = new Date('2023-11-11T00:00:00');
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // Modal Logic
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal(index) {
+            const data = events[index];
+            document.getElementById('modal-date').innerText = formatDateText(data);
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-desc').innerText = data.desc;
+            
+            const mainImg = document.getElementById('modal-img');
+            mainImg.src = data.image;
+            mainImg.onerror = () => { mainImg.src = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80'; };
+
+            // Render Gallery if present
+            const galleryWrap = document.getElementById('modal-gallery-wrap');
+            const galleryContainer = document.getElementById('modal-gallery');
+            galleryContainer.innerHTML = '';
+
+            const allImages = [data.image, ...(data.gallery || [])];
+
+            if (allImages.length > 1) {
+                galleryWrap.classList.remove('hidden');
+                allImages.forEach(imgSrc => {
+                    const thumb = document.createElement('button');
+                    thumb.className = 'w-16 h-16 rounded-lg overflow-hidden bg-[#f1e5df] border border-rose-200 shrink-0 hover:opacity-80 transition';
+                    thumb.onclick = () => { mainImg.src = imgSrc; };
+                    thumb.innerHTML = `<img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80'">`;
+                    galleryContainer.appendChild(thumb);
+                });
+            } else {
+                galleryWrap.classList.add('hidden');
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Fleeing "Nein" Button Logic
+        const declineBtn = document.getElementById('decline-btn');
+        declineBtn.addEventListener('mouseenter', moveButton);
+        declineBtn.addEventListener('click', moveButton);
+
+        function moveButton() {
+            if (window.matchMedia('(max-width: 639px)').matches) return;
+            const area = document.getElementById('button-container');
+            const maxX = Math.max(0, (area.clientWidth - declineBtn.offsetWidth) / 2 - 8);
+            const maxY = 16;
+            const x = (Math.random() * 2 - 1) * Math.min(maxX, 70);
+            const y = (Math.random() * 2 - 1) * maxY;
+            declineBtn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Accept Invitation Logic
+        function acceptInvitation() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            document.getElementById('accepted-message').classList.remove('hidden');
+            document.getElementById('accept-btn').disabled = true;
+            document.getElementById('accept-btn').classList.add('opacity-50');
+            declineBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
